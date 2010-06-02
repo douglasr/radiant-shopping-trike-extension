@@ -6,6 +6,7 @@ class Product < ActiveRecord::Base
   validates_format_of :code, :with => /^[-a-z0-9_\.\$@&!\*"'\(\),]*$/i 
   validates_presence_of :code
   validates_uniqueness_of :code
+  validates_presence_of :name
   validates_presence_of :product_category
 
   has_many :product_prices, :dependent => :destroy
@@ -14,7 +15,7 @@ class Product < ActiveRecord::Base
   # include CurrencyConversion
 
   def product_price_for_quantity(quantity)
-    self.product_prices.find(:first, :conditions => ['min_quantity <= ? AND `upgrade` != 1', quantity], :order => 'min_quantity desc')
+    self.product_prices.find(:first, :conditions => ['min_quantity <= ? AND upgrade = ?', quantity, false], :order => 'min_quantity desc')
   end
 
   def first_product_price

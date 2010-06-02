@@ -1,0 +1,35 @@
+<%= javascript_include_tag "controls" -%>
+<h1>Orders</h1>
+
+<table id="orders" class="index">
+  <thead>
+    <tr>
+      <th>Order Number</th>
+      <th>Name</th>
+      <th>CC Last</th>
+      <th># Items</th>
+      <th>Total</th>
+      <th>Order Status</th>
+      <th>Modify</th>
+    </tr>
+  </thead>
+  <tbody>
+<% unless @orders.empty? -%>
+<%   for order in @orders -%>
+    <tr class="node">
+      <td class="order_number"><%= link_to h(order.order_number), admin_order_url(order) %></td>
+      <td class="name"><%= h order.name %></td>
+      <td class="credit_card_last"><%= h order.credit_card_last %></td>
+      <td class="items"><%= h order.order_items.length %></td>
+      <td class="total"><%= h order.order_total%></td>
+      <td class="status"><%= h order.order_status %></td>
+      <td class="modify"><%= link_to 'Edit', edit_admin_order_url(order) %></td>
+    </tr>
+<%    end -%>
+<% else -%>
+    <tr class="node">
+      <td colspan="7" class="note">No orders</td>
+    </tr>
+<% end -%>
+  </tbody>
+</table>

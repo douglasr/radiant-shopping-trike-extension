@@ -1,4 +1,4 @@
-module  Admin::ProductHelper
+module  Admin::ProductsHelper
   def currently_used_product_categories
     Product.find_by_sql("select product_category from products group by product_category;").collect {|p| "'#{p.product_category}'" }.to_sentence
   end

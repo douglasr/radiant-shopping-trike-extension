@@ -1,6 +1,36 @@
 = Shopping Trike
 A simple shopping cart for RadiantCMS.
 
+= Fork Information
+This is a fork of tricycle/radiant-shopping-trike-extension updated to work with Radiant 0.8.1
+
+Changes done include:
+* cleaned up controllers, models and views
+* cleaned up routes
+* added name attribute to products (and thus shopping:product:name and shopping:cart:item:name tags)
+* added is_downloadable attribute to products to flag products that can be downloaded
+* added ability to download products following the creation of a successful order
+* added category="" attribute to shopping:product:each
+* added store_slug="" attribute to shopping:product:link tag to allow override (for store sub-pages)
+* allow products to be accessed as /store/:code/:some-seo-optimized-name (for SEO)
+* allow cart to be a complete page if desired
+* added support for shipping costs (with different costs for different countries)
+* added support for tracking orders (see StorePage model for all the tags added to support this)
+* added image attribute to shopping:cart:checkout to allow for submit tags of type=image
+* added new tags - shopping:cart:subtotal, shopping:cart:tax, shopping:cart:shipping, shopping:cart:item:category
+* added support for processing credit cards using the extension (through the use of ActiveMerchant)
+* code fixes all over to make it work with Radiant 0.8.1
+
+Still To Do:
+* pull remaining configurations (ie. ActiveMerchant config, email config, etc) out of code and put into the RadiantConfig extension
+* allow taxes to be more easily configured
+* update test code to include changes
+
+
+Version 0.2
+Douglas Robertson
+dr@edgeoftheearth.com
+
 Version 0.1
 Tobin Richard, Tricycle Developments
 tobin.richard@gmail.com

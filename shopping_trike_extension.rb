@@ -1,36 +1,34 @@
 # Uncomment this if you reference any of your controllers in activate
-require_dependency 'application'
+#require_dependency 'application'
 
 class ShoppingTrikeExtension < Radiant::Extension
-  version "0.1"
+  version "0.2.0"
   description "A simple cart for RadiantCMS"
-  url "http://code.trike.com.au/svn/radiant/extensions/shopping_trike/"
+  url "http://github.com/douglasr/radiant-shopping-trike-extension"
   
   define_routes do |map|
     # map.connect 'admin/store/:action', :controller => 'store'
     # Product Routes
-    map.with_options(:controller => 'admin/product') do |product|
-      product.product_index  'admin/products',            :action => 'index'
-      product.product_price_index  'admin/products',      :action => 'index'
-      product.coupon_index  'admin/products',             :action => 'index'
-      product.product_edit   'admin/products/edit/:id',   :action => 'edit'
-      product.product_new    'admin/products/new',        :action => 'new'
-      product.product_remove 'admin/products/remove/:id', :action => 'remove'
+    
+    map.namespace :admin, :member => { :remove => :get } do |admin|
+      admin.resources :products, :member => { :remove => :get }, :has_many => [:product_prices, :coupons]
+      admin.resources :product_prices, :member => { :remove => :get }
+      admin.resources :coupons, :member => { :remove => :get }
+      admin.resources :orders, :member => { :remove => :get }
+    end
+    
+    map.with_options(:controller => 'admin/products') do |product|
       product.update_ccy     'admin/products/ccy/edit/:ccy', :action => 'update_ccy', :ccy => /[a-z]{3}-[a-z]{3}/
     end
-    map.with_options(:controller => 'admin/product_price') do |product_price|
-      product_price.product_price_edit   'admin/product_prices/edit/:id',                 :action => 'edit'
-      product_price.product_price_new    'admin/products/:product_id/product_prices/new', :action => 'new'
-      product_price.product_price_remove 'admin/product_prices/remove/:id',               :action => 'remove'
-    end
-    map.with_options(:controller => 'admin/coupon') do |coupon|
-      # radiant does things very different. edit is edit AND new, and is POSTed to both, not PUT
-      coupon.coupon_edit   'admin/coupons/edit/:id',                 :action => 'edit'
-      coupon.coupon_new    'admin/products/:product_id/coupons/new', :action => 'new'
-      coupon.coupon_remove 'admin/coupons/remove/:id',               :action => 'remove'
-    end
 
-    map.connect 'shopping_trike/cart/:action', :controller => 'cart'
+    #map.connect '/store/cart/:action', :controller => 'cart'
+    map.connect '/merchant/:action', :controller => 'cart'
+    map.connect '/shopping_trike/cart/:action', :controller => 'cart'
+    map.connect '/store/orders/search', :controller => 'orders', :action => 'search'
+    map.connect '/store/orders/:order_number', :controller => 'orders', :action => 'show'
+    map.connect '/store/orders/:order_number/download/:code', :controller => 'orders', :action => 'download'
+    map.connect '/store/orders/:order_number/:action', :controller => 'orders'
+    map.connect '/store/thanks', :controller => 'orders', :action => 'thanks'
   end
   
   def activate
@@ -38,11 +36,15 @@ class ShoppingTrikeExtension < Radiant::Extension
     SiteController.class_eval do
       session :disabled => false
     end
-    
+
+    SiteController.send :include, InPlaceEditing
+
     admin.tabs.add "Products", "/admin/products", :after => "Layouts", :visibility => [:all]
+    admin.tabs.add "Orders", "/admin/orders", :after => "Layouts", :visibility => [:all]
   end
   
   def deactivate
+    admin.tabs.remove "Orders"
     admin.tabs.remove "Products"
   end
 end

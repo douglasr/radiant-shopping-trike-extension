@@ -7,14 +7,14 @@
     <tr class="node level-1"
      onmouseover="Element.addClassName(this, 'highlight');"
      onmouseout="Element.removeClassName(this, 'highlight');">
-      <td class="code"><%= link_to h(@product.code), product_edit_path(:id => @product) %></td>
-      <td class="description"><%= link_to @product.description, product_edit_path(:id => @product) %></td>
-      <td class="product_category"><%= link_to @product.product_category, product_edit_path(:id => @product) %></td>
+      <td class="code"><%= h(@product.code) %></td>
+      <td class="description"><%= @product.description %></td>
+      <td class="product_category"><%= @product.product_category %></td>
     </tr>
   </tbody>
 </table>
 
 <% form_tag '' do %>
   <p class="buttons"><%= submit_tag "Delete Product", :class => 'button' %>
-    or <%= link_to 'Cancel', product_index_path %></p>
+    or <%= link_to 'Cancel', admin_products_url %></p>
 <% end %>

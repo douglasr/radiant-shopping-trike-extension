@@ -1,6 +1,7 @@
 <%= javascript_include_tag "controls" -%>
 <h1>Products</h1>
 
+<!--
 <h2>Currency Conversion Rates</h2>
 <table id="forex" class="index" style="width: 40%;">
   <thead>
@@ -33,14 +34,19 @@
 </table>
 <%   end -%>
 <% end -%>
+
 <h2>Products</h2>
+-->
+
 <p><strong>Note:</strong> All prices shown are in US dollars.</p>
 <table id="products" class="index">
   <thead>
     <tr>
       <th>Code</th>
+      <th>Name</th>
       <th>Description</th>
-      <th>Product Category</th>
+      <th style="white-space: nowrap;">Product Category</th>
+      <th>D/L?</th>
       <th>Related</th>
       <th>Modify</th>
     </tr>
@@ -49,9 +55,11 @@
 <% unless @products.empty? -%>
 <%   for product in @products -%>
     <tr class="node">
-      <td class="code"><%= link_to h(product.code), product_edit_path(:id => product) %></td>
-      <td class="description"><%= link_to h(product.description), product_edit_path(:id => product) %></td>
-      <td class="product_category"><%= link_to h(product.product_category), product_edit_path(:id => product) %></td>
+      <td class="code"><%= link_to h(product.code), edit_admin_product_url(product) %></td>
+      <td class="name"><%= h(product.name) %></td>
+      <td class="description"><%= h(product.description) %></td>
+      <td class="product_category"><%= h(product.product_category) %></td>
+      <td class="downloadable"><%= product.is_downloadable ? 'Yes' : 'No' %></td>
       <td class="related">
         <table id="<%= dom_id(product, "prices_") %>">
           <thead>
@@ -63,13 +71,13 @@
           <tbody>
 <%     for product_price in product.product_prices -%>
             <tr>
-              <td class="min_quantity"><%= link_to h(product_price.description), product_price_edit_path(:id => product_price) -%></td>
-              <td class="price"><%= link_to h(product_price.price), product_price_edit_path(:id => product_price) -%></td>
+              <td class="min_quantity"><%= link_to h(product_price.description), edit_admin_product_product_price_url(product, product_price) -%></td>
+              <td class="price"><%= link_to h(product_price.price), edit_admin_product_product_price_url(product, product_price) -%></td>
             </tr>
 <%     end -%>
           </tbody>
         </table>
-        <p><%= link_to "New price break", product_price_new_url(:product_id => product) -%></p>
+        <p><%= link_to "New price break", new_admin_product_product_price_url(product) -%></p>
         <table id="<%= dom_id(product, "coupons_") %>">
           <thead>
             <tr>
@@ -80,24 +88,24 @@
           </thead>
 <%     for coupon in product.coupons -%>
             <tr>
-              <td class="code"><%= link_to h(coupon.code), coupon_edit_path(:id => coupon) -%></td>
-              <td class="expiration_date"><%= link_to h(coupon.expiration_date), coupon_edit_path(:id => coupon) -%></td>
-              <td class="discount_per_order"><%= link_to h(coupon.discount_per_order), coupon_edit_path(:id => coupon) -%></td>
+              <td class="code"><%= link_to h(coupon.code), edit_admin_product_coupon_url(product, coupon) -%></td>
+              <td class="expiration_date"><%= link_to h(coupon.expiration_date), edit_admin_product_coupon_url(product, coupon) -%></td>
+              <td class="discount_per_order"><%= link_to h(coupon.discount_per_order), edit_admin_product_coupon_url(product, coupon) -%></td>
             </tr>
 <%     end -%>
           </tbody>
         </table>
-        <p><%= link_to "New coupon", coupon_new_url(:product_id => product) -%></p>
+        <p><%= link_to "New coupon", new_admin_product_coupon_url(product) -%></p>
       </td>
       <td class="remove">
         <%= link_to image_tag("admin/remove.png", :alt => 'Remove Product'),
-                    product_remove_path(:id => product) %>
+                    remove_admin_product_url(:id => product) %>
       </td>
     </tr>
 <%   end -%>
 <% else -%>
     <tr>
-      <td colspan="4" class="note">No Products</td>
+      <td colspan="6" class="note">No products</td>
     </tr>
 <% end -%>
   </tbody>
@@ -109,5 +117,5 @@
 </script>
 
 <p>
-  <%= link_to 'New product', product_new_url %>
+  <%= link_to 'New product', new_admin_product_url %>
 </p>

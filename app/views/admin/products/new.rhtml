@@ -1,16 +1,17 @@
-<% if @product.new_record? -%>
 <h1>New Product</h1>
-<% else -%>
-<h1>Edit Product</h1>
-<% end -%>
 
-<% form_for :product, @product, :url => '', :method => :post do |f| %>
+<% form_for [:admin,@product] do |f| %>
   <table class="fieldset">
     <tbody>
       <tr>
         <td class="label"><label for="product_code">Code</label></td>
         <td class="field"><%= f.text_field :code, :size => 100, :class => 'textbox'  %></td>
         <td class="help">Required. Only numbers and letters allowed</td>
+      </tr>
+      <tr>
+        <td class="label"><label for="product_name">Name</label></td>
+        <td class="field"><%= f.text_field :name, :size => 100, :class => 'textbox'  %></td>
+        <td class="help">Required.</td>
       </tr>
       <tr>
         <td class="label"><label class="optional" for="product_description">Description</label></td>
@@ -22,12 +23,17 @@
         <td class="field"><%= f.text_field :product_category, :size => 100, :class => 'textbox' %></td>
         <td class="help">Required. One of <%= currently_used_product_categories %></td>
       </tr>
+      <tr>
+        <td class="label"><label for="product_is_downloadable">Is Downloadable?</label></td>
+        <td class="field"><%= f.check_box :is_downloadable, :class => 'checkbox' %></td>
+        <td class="help">Is this product something the buyer will download?</td>
+      </tr>
     </tbody>
   </table>  
   <p class="buttons">
     <%= save_model_button(@product) %>
     <%= save_model_and_continue_editing_button(@product) %>
-    or <%= link_to "Cancel", product_index_url %>
+    or <%= link_to "Cancel", admin_products_url %>
   </p>
 <% end %>
 

@@ -1,0 +1,89 @@
+<h1>View Order</h1>
+
+<p>
+<strong>Order Number:</strong>
+<%= @order.order_number %>
+</p>
+
+<p>
+<strong>Name:</strong>
+<%= @order.name %> <br>
+<strong>Email:</strong>
+<%= @order.email %>
+</p>
+
+<p>
+<strong>Billing Address:</strong><br>
+<%= @order.billing_address %><br>
+<%= @order.billing_city %><br>
+<%= @order.billing_prov %><br>
+<%= @order.billing_country %><br>
+<%= @order.billing_postal %>
+</p>
+
+<p>
+<strong>Shipping Address:</strong><br>
+<%= @order.shipping_address %><br>
+<%= @order.shipping_city %><br>
+<%= @order.shipping_prov %><br>
+<%= @order.shipping_country %><br>
+<%= @order.shipping_postal %>
+</p>
+
+<p>
+<strong>Credit Card Last 4:</strong>
+<%= @order.credit_card_last %><br>
+<strong>IP Address:</strong>
+<%= @order.ip_address %><br>
+<strong>Gateway Order ID:</strong>
+<%= @order.gateway_order_id %><br>
+<strong>Gateway Authorization:</strong>
+<%= @order.gateway_authorization %>
+</p>
+
+<p>
+<strong>Order Details</strong>
+</p>
+
+<table>
+<thead>
+ <th>Item</th>
+ <th>Code</th>
+ <th>Qty</th>
+ <th>Price</th>
+</thead>
+<tbody>
+<% for item in @order.order_items do %>
+ <tr>
+  <td><%= item.item_name %> &nbsp;</td>
+  <td><%= item.item_code %></td>
+  <td align="center"><%= item.quantity %></td>
+  <td align="right"><%= item.item_price %></td>
+ </tr>
+<% end %>
+ <tr>
+  <td>&nbsp;</td>
+  <td colspan="2" align="right">Sub-Total:</td>
+  <td align="right"><%= @order.order_subtotal %></td>
+ </tr>
+ <tr>
+  <td>&nbsp;</td>
+  <td colspan="2" align="right">Shipping:</td>
+  <td align="right"><%= @order.order_shipping_cost %></td>
+ </tr>
+ <tr>
+  <td>&nbsp;</td>
+  <td colspan="2" align="right">GST:</td>
+  <td align="right"><%= @order.order_gst %></td>
+ </tr>
+ <tr>
+  <td>&nbsp;</td>
+  <td colspan="2" align="right"><b>Total:</b></td>
+  <td align="right"><%= @order.order_total %></td>
+ </tr>
+</tbody>
+</table>
+
+<p>
+<%=  link_to 'Back to orders', admin_orders_url %>
+</p>

@@ -1,13 +1,12 @@
-<% @product = @coupon.product -%>
-<% if @coupon.new_record? -%>
+<% @product = Product.find(params[:product_id]) -%>
+<% @coupon.product = @product %>
 <h1>New Coupon</h1>
-<% else -%>
-<h1>Edit Coupon</h1>
-<% end -%>
 
 <h2><%= h @product.code %>: <%= h @product.description %></h2>
 
-<% form_for :coupon, @coupon, :url => '', :method => :post do |f| %>
+<% form_for [:admin,@product,@coupon] do |f| %>
+  <%= f.error_messages %>
+  <%= f.hidden_field :product_id %>
   <table class="fieldset">
     <tbody>
       <tr>
@@ -30,7 +29,7 @@
   <p class="buttons">
     <%= save_model_button(@coupon) %>
     <%= save_model_and_continue_editing_button(@coupon) %>
-    or <%= link_to "Cancel", product_index_url %>
+    or <%= link_to "Cancel", admin_products_url %>
   </p>
 <% end %>
 

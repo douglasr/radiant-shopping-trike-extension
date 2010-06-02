@@ -1,13 +1,9 @@
 <% @product = @product_price.product -%>
-<% if @product_price.new_record? -%>
-<h1>New Product Price</h1>
-<% else -%>
 <h1>Edit Product Price</h1>
-<% end -%>
 
 <h2><%= h @product.code %>: <%= h @product.description %></h2>
 
-<% form_for :product_price, @product_price, :url => '', :method => :post do |f| %>
+<% form_for [:admin,@product,@product_price] do |f| %>
   <table class="fieldset">
     <tbody>
       <tr>
@@ -30,7 +26,7 @@
   <p class="buttons">
     <%= save_model_button(@product_price) %>
     <%= save_model_and_continue_editing_button(@product_price) %>
-    or <%= link_to "Cancel", product_index_url %>
+    or <%= link_to "Cancel", admin_products_url %>
   </p>
 <% end %>
 

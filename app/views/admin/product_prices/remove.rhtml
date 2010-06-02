@@ -10,12 +10,12 @@
     <tr class="node level-1"
      onmouseover="Element.addClassName(this, 'highlight');"
      onmouseout="Element.removeClassName(this, 'highlight');">
-      <td class="code"><%= link_to h(@product_price.code), product_price_edit_path(:id => @product_price) %></td>
+      <td class="code"><%= h(@product_price.code) %></td>
     </tr>
   </tbody>
 </table>
 
 <form method="post" action="">
   <p class="buttons"><%= submit_tag "Delete Product Price", :class => 'button' %>
-    or <%= link_to 'Cancel', product_index_path %></p>
+    or <%= link_to 'Cancel', admin_products_url %></p>
 </form>
